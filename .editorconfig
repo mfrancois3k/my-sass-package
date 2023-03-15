@@ -1,0 +1,58 @@
+# https://editorconfig.org/
+
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+end_of_line = lf
+charset = utf-8
+
+[**.min.js]
+indent_style = unset
+indent_size = unset
+insert_final_newline = unset
+
+# Indentation override for all JS under lib directory
+[lib/**.js]
+indent_style = space
+indent_size = 2
+
+# NPM - https://docs.npmjs.com/files/package.json
+# Stylint - https://rosspatton.github.io/stylint/
+# Matches the exact files either package.json or .travis.yml
+[{package.json,.travis.yml, .stylintrc}]
+indent_style = space
+indent_size = 2
+
+# 4 space indentation
+[*.py]
+indent_style = space
+indent_size = 2
+
+[*.hbs]
+indent_style = space
+indent_size = 2
+
+# Sass(SCSS) - http://sass-lang.com/
+[*.scss]
+indent_style = tab
+
+# Shell script (bash) - https://www.gnu.org/software/bash/manual/bash.html
+[*.sh]
+indent_style = space
+indent_size = 4
+
+# SQL (MySQL) - https://www.mysql.com/
+[*.sql]
+indent_style = space
+indent_size = 2
+
+
+# YAML - http://yaml.org/
+[{*.yml,*.yaml}]
+indent_style = space
+indent_size = 2
+
