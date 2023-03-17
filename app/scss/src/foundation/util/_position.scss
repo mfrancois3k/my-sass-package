@@ -1,0 +1,399 @@
+//MIXINS
+
+//1==FONTS
+//2==REM
+//3==appereance
+//4==flexbox
+//5==inline block wrapper
+//6==clearfix
+//7==triangle
+//8==currency (usd,euro)
+//9==placeholder
+//10==scrollbar
+//11==hidden / visible
+//12==retina
+
+
+// images
+@mixin image-2x($image, $width, $height) {
+  @media (min--moz-device-pixel-ratio: 1.3),
+         (-o-min-device-pixel-ratio: 2.6/2),
+         (-webkit-min-device-pixel-ratio: 1.3),
+         (min-device-pixel-ratio: 1.3),
+         (min-resolution: 1.3dppx) {
+    /* on retina, use image that's scaled by 2 */
+    background-image: url($image);
+    background-size: $width $height;
+  }
+}
+
+//Usage:
+
+div.logo {
+   background: url("logo.png") no-repeat;
+   @include image-2x("logo2x.png", 100px, 25px);
+}
+
+// zoom on background-image
+@mixin zoom($value: 1.05) {
+	&:hover > * {
+		transform: scale($value);
+	}
+
+	> * {
+		transition: transform $duration*2 $timing;
+	}
+
+}
+
+
+@mixin fullBackground {
+  content: "";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}
+
+@mixin backgroundCover {
+  background: {
+    position: 50% 50%;
+    repeat: no-repeat;
+    size: cover;
+  }
+}
+
+
+@mixin centeredBackground {
+  background: {
+    position: 50% 50%;
+    repeat: no-repeat;
+  }
+}
+
+@mixin bgCoverContainer {
+  @include centeredBackground;
+  background: {
+    size: cover;
+  }
+}
+
+/****************************
+ HIGH PPI DISPLAY BACKGROUNDS
+*****************************/
+
+@mixin background-2x($path, $ext: "png", $w: auto, $h: auto, $pos: left top, $repeat: no-repeat) {
+
+  $at1x_path: "#{$path}.#{$ext}";
+  $at2x_path: "#{$path}@2x.#{$ext}";
+
+  background-image: url("#{$at1x_path}");
+  background-size: $w $h;
+  background-position: $pos;
+  background-repeat: $repeat;
+
+  @media all and (-webkit-min-device-pixel-ratio : 1.5),
+  all and (-o-min-device-pixel-ratio: 3/2),
+  all and (min--moz-device-pixel-ratio: 1.5),
+  all and (min-device-pixel-ratio: 1.5) {
+    background-image: url("#{$at2x_path}");
+  }
+
+@mixin ghost-button($font, $font-size, $font-color, $border-size, $border-color, $padding, $transition-speed, $hover-color) {
+  display:inline-block;
+  text-decoration:none;
+  text-transform:uppercase;
+  font-family: $font;
+  font-size: $font-size;
+  color:$font-color;
+  border:$border-size solid $border-color;
+  padding:$padding;
+  -webkit-transition: color $transition-speed, background $transition-speed;
+  transition: color $transition-speed, background $transition-speed;
+  &:hover {
+    background:$border-color;
+    color:$hover-color;
+  }
+}
+
+//---------------------------------------------------
+
+@mixin center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+//---------------------------------------------------
+
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+//---------------------------------------------------
+
+@mixin abs-pos ($top: auto, $right: auto, $bottom: auto, $left: auto) {
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+  position: absolute;
+}
+/* Center by X and Y */
+
+@mixin center_cont {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translatey(-50%);
+}
+
+/* Center by Y */
+
+@mixin center_vert {
+	position: absolute;
+	top: 50%;
+	transform: translatey(-50%);
+}
+
+@mixin vertical-align {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+// Position on x axis
+
+@mixin xPos($x) {
+  -webkit-transform:translateX($x);
+  -moz-transform:translateX($x);
+  -ms-transform:translateX($x);
+  transform:translateX($x);
+}
+
+@mixin position($type, $top: null, $right: null, $bottom: null, $left: null) {
+  position: $type;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+@mixin size($length: 32px) {
+  height: $length;
+  width: $length;
+}
+// example use
+// .16px{@include size(16px)}
+// .32px{@include size(32px)}
+// .128px{@include size(128px)}
+// .256px{@include size(256px)}
+
+@mixin font-size($size) {
+  font-size: $size;
+  font-size: calculateRem($size);
+}
+
+@include font-size(14px);
+
+@function calculateRem($size) {
+  $remSize: $size / 16px;
+  @return $remSize * 1rem;
+}
+
+
+@mixin reset-list { margin: 0; padding: 0; list-style: none; }
+
+ ul {
+@include reset-list;
+background-color: #f1f1f1;
+		li { padding: 10px; border: 1px solid #ccc; } }
+
+// $color  $pos top or bottom@mixin
+
+ //one-px-x($color, $pos) { position: absolute; content: ''; left: 0; right: 0; height: 1px; #{$pos}: 0; background-color: $color; -webkit-transform: scaleY(0.5) translateZ(0); -moz-transform: scaleY(0.5) translateZ(0); transform: scaleY(0.5) translateZ(0);}
+
+
+// $pos  left or right@mixin one-px-y($color, $pos) { position: absolute; content: ''; top: 0; bottom: 0; width: 1px; #{$pos}: 0; background-color: $color; -webkit-transform: scaleX(0.5) translateZ(0); -moz-transform: scaleX(0.5) translateZ(0); transform: scaleX(0.5) translateZ(0);}
+
+@mixin page-slider { overflow: auto; display: flex; > * { flex: 0 0 100%; }}
+
+
+@mixin orientation($position) { @if $position == 'landscape' { @media only screen and (orientation : landscape) { @content; } } @else if $position == 'portrait' { @media only screen and (orientation : portrait) { @content; } }}
+
+// SHADOWS
+@mixin box-shadow ($string) {
+  -webkit-box-shadow: $string;
+  -moz-box-shadow:  $string;
+  box-shadow:     $string;
+}
+@mixin drop-shadow ($x: 0, $y: 1px, $blur: 2px, $spread: 0, $alpha: 0.25) {
+  -webkit-box-shadow: $x $y $blur $spread rgba(0, 0, 0, $alpha);
+  -moz-box-shadow:    $x $y $blur $spread rgba(0, 0, 0, $alpha);
+  box-shadow:         $x $y $blur $spread rgba(0, 0, 0, $alpha);
+}
+@mixin inner-shadow ($x: 0, $y: 1px, $blur: 2px, $spread: 0, $alpha: 0.25) {
+  -webkit-box-shadow: inset $x $y $blur $spread rgba(0, 0, 0, $alpha);
+  -moz-box-shadow:    inset $x $y $blur $spread rgba(0, 0, 0, $alpha);
+  box-shadow:         inset $x $y $blur $spread rgba(0, 0, 0, $alpha);
+}
+
+// BOX MODEL
+@mixin box-sizing ($type: border-box) {
+  -webkit-box-sizing: $type;
+  -moz-box-sizing:    $type;
+  box-sizing:         $type;
+}
+
+// BORDERS
+@mixin borders($top-color: #EEE, $right-color: #EEE, $bottom-color: #EEE, $left-color: #EEE) {
+  border-top:    solid 1px $top-color;
+  border-left:   solid 1px $left-color;
+  border-right:  solid 1px $right-color;
+  border-bottom: solid 1px $bottom-color;
+}
+@mixin border-radius ($radius: 2px) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius:    $radius;
+  border-radius:         $radius;
+  -moz-background-clip:    padding;
+  -webkit-background-clip: padding-box;
+  background-clip:         padding-box;
+}
+@mixin border-radiuses ($topright: 0, $bottomright: 0, $bottomleft: 0, $topleft: 0) {
+  -webkit-border-top-right-radius:    $topright;
+  -webkit-border-bottom-right-radius: $bottomright;
+  -webkit-border-bottom-left-radius:  $bottomleft;
+  -webkit-border-top-left-radius:     $topleft;
+  -moz-border-radius-topright:        $topright;
+  -moz-border-radius-bottomright:     $bottomright;
+  -moz-border-radius-bottomleft:      $bottomleft;
+  -moz-border-radius-topleft:         $topleft;
+  border-top-right-radius:            $topright;
+  border-bottom-right-radius:         $bottomright;
+  border-bottom-left-radius:          $bottomleft;
+  border-top-left-radius:             $topleft;
+  -moz-background-clip:    padding;
+  -webkit-background-clip: padding-box;
+  background-clip:         padding-box;
+}
+@mixin border-radius-top-left ($radius: 0) {
+  -webkit-border-top-left-radius: $radius;
+  -moz-border-radius-topleft:     $radius;
+  border-top-left-radius:         $radius;
+}
+@mixin border-radius-top-right ($radius: 0) {
+  -webkit-border-top-right-radius: $radius;
+  -moz-border-radius-topright:     $radius;
+  border-top-right-radius:         $radius;
+}
+@mixin border-radius-bottom-left ($radius: 0) {
+  webkit-border-bottom-left-radius: $radius;
+  -moz-border-radius-bottomleft:    $radius;
+  border-bottom-left-radius:        $radius;
+}
+@mixin border-radius-bottom-right ($radius: 0) {
+  -webkit-border-bottom-right-radius: $radius;
+  -moz-border-radius-bottomright:     $radius;
+  border-bottom-right-radius:         $radius;
+}
+
+
+
+@mixin circle {
+  @include border-radius(100%);
+}
+
+// GRADIENTS
+@mixin gradient ($startColor: #eee, $endColor: white) {
+  background-color: $startColor;
+  background: -webkit-gradient(linear, left top, left bottom, from($startColor), to($endColor));
+  background: -webkit-linear-gradient(top, $startColor, $endColor);
+  background:    -moz-linear-gradient(top, $startColor, $endColor);
+  background:     -ms-linear-gradient(top, $startColor, $endColor);
+  background:      -o-linear-gradient(top, $startColor, $endColor);
+}
+@mixin horizontal-gradient ($startColor: #eee, $endColor: white) {
+  background-color: $startColor;
+  background-image: -webkit-gradient(linear, left top, right top, from($startColor), to($endColor));
+  background-image: -webkit-linear-gradient(left, $startColor, $endColor);
+  background-image:    -moz-linear-gradient(left, $startColor, $endColor);
+  background-image:     -ms-linear-gradient(left, $startColor, $endColor);
+  background-image:      -o-linear-gradient(left, $startColor, $endColor);
+}
+@mixin linear-gradient-m ($fallback, $string) {
+  background-color: $fallback;
+  background: -webkit-linear-gradient($string);
+  background: -moz-linear-gradient($string);
+  background: -ms-linear-gradient($string);
+  background: -o-linear-gradient($string);
+}
+
+// @mixin gradientLinear($color: deeppink, $color1: dodgerblue, $direction: left){
+//   linear-gradient($color, $color1) ($direction: repeat);
+// }
+
+
+//HIDDEN / VISIBLE
+//===========//
+@mixin hidden {
+	display: none;
+	visibility: hidden;
+}
+
+@mixin visible($state: 'block') {
+	display: unquote($state);
+	visibility: visible;
+}
+
+@mixin spacergif() {
+	background: url('data:image/gif;base64,R0lGODlhZAAUAIAAAAD//wAAACH5BAEAAAAALAAAAABkABQAAAIshI+py+0Po5y02ouz3rz7D4biSJbmiabqyrbuC8fyTNf2jef6zvf+DwwKZwUAOw==') repeat 0 0;
+}
+
+//===========//
+//INLINE BLOCK WRAPPER
+//===========//
+@mixin inline_block_wrapper {
+	font-size: 0;
+	line-height: 0;
+	letter-spacing: -1px;
+}
+
+// aspect ratio
+@mixin ratio($width:16, $height:9) {
+	width: 100%;
+	overflow: hidden;
+	padding-top: ($height / $width) * 100%;
+	position: relative;
+
+	> * {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background-size: cover;
+		background-position: center;
+	}
+}
+
+
+@mixin container($percentage)
+{ padding-right: $percentage; padding-left: $percentage;}
+
+@mixin container-margin($percentage) {
+margin-right: $percentage; margin-left: $percentage;}
+
+@mixin full-bg($height, $width, $cover) {
+width: $width; height: $height; background-size: $cover;
+background-position: center center;}
+}

@@ -1,0 +1,18 @@
+// how to use @use
+// @use for different folders
+//only use @use for varible or mixing
+@use '../util';
+//@use ../../../lib/library.scss'
+
+html {
+font-size: 100%;
+box-sizing: border-box;
+}
+
+*::before,
+*::after {
+box-sizing: inherit;
+}
+body {
+box-sizing: inherit;
+}
