@@ -1,0 +1,103 @@
+//MIXINS
+
+//1==FONTS
+//2==REM
+//3==appereance
+//4==flexbox
+//5==inline block wrapper
+//6==clearfix
+//7==triangle
+//8==currency (usd,euro)
+//9==placeholder
+//10==scrollbar
+//11==hidden / visible
+//12==retina
+@use '/functions' as f;
+
+
+// VARiABLES
+// desktop grid
+$grid-desktop-columns: 12;
+$grid-desktop-sideMargin: 80px;
+$grid-desktop-gutter: 40px;
+$grid-desktop-breakpoint: 1400px;
+
+// tablet grid
+$grid-tablet-columns: 12;
+$grid-tablet-sideMargin: 60px;
+$grid-tablet-gutter: 30px;
+$grid-tablet-breakpoint: 1020px;
+
+// mobile grid
+$grid-mobile-columns: 4;
+$grid-mobile-sideMargin: 32px;
+$grid-mobile-gutter: 20px;
+$grid-mobile-breakpoint: 620px;
+
+// pixels to % variables
+$desk-grid-width: 100% -
+  (($grid-desktop-sideMargin * 2 / $grid-desktop-breakpoint) * 100%);
+$tab-grid-width: 100% -
+  (($grid-tablet-sideMargin * 2 / $grid-tablet-breakpoint) * 100%);
+$mob-grid-width: 100% -
+  (($grid-mobile-sideMargin * 2 / $grid-mobile-breakpoint) * 100%);
+
+$desk-gutter: (
+  (
+      $grid-desktop-gutter /
+        ($grid-desktop-breakpoint - ($grid-desktop-sideMargin * 2))
+    ) * 100%
+);
+$tab-gutter: (
+  (
+      $grid-tablet-gutter /
+        ($grid-tablet-breakpoint - ($grid-tablet-sideMargin * 2))
+    ) * 100%
+);
+$mob-gutter: (
+  (
+      $grid-mobile-gutter /
+        ($grid-mobile-breakpoint - ($grid-mobile-sideMargin * 2))
+    ) * 100%
+);
+
+$breakpoints: (
+  'phone': f.em(25),
+  'phone-wide': f.em(30),
+  'phablet':  f.em(35),
+  'tablet-small': f.em(40),
+  'tablet': f.em(48),
+  'tablet-wide': f.em(64),
+  'desktop': f.em(78),
+  'desktop-wide': f.em(90),
+  'desktop-large': f.em(105)
+);
+
+@mixin mq($width, $type: min) {
+  @if map_has_key($breakpoints, $width) {
+    $width: map_get($breakpoints, $width);
+  }
+
+  @if $type == min {
+    $width: $width - 1px;
+  }
+
+  @media only screen and (#{$type}-width: $width) {
+    @content;
+  }
+}
+
+
+// CLASSES
+.grid {
+  @include grid-base($desk-grid-width);
+  @media screen and (max-width: $grid-tablet-breakpoint) {
+    width: $tab-grid-width;
+  }
+  @media screen and (max-width: $grid-mobile-breakpoint) {
+    width: $mob-grid-width;
+  }
+  &-0 {
+    @include grid-base(100%);
+  }
+}

@@ -3,14 +3,41 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "lint": "eslint **/*.js",
-    "lint:fix": "prettier-eslint **/*.js --write"
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "scripts": {
+    "pretest": "npm run lint",
+    "prepare": "husky install",
+    "test": "npm-run-all lint",
+    "cover": "npm t",
+    "postcover": "rm -rf .nyc_output",
+    "cover:open": "open coverage/index.html",
+    "lint": "npm-run-all lint:**",
+    "lint:js": "eslint **/*.js --cache --fix ./",
+    "lint:css": "stylelint **/*.scss",
+    "lint:css:fix": "stylefmt -R src/",
+    "lint:fix": "prettier eslint **/*.{js,jsx,ts,tsx,json,css,scss,md} --cache --fix",
+    "watch": "npm-run-all --parallel watch:_",
+    "watch:test": "npm t -- --watch",
+    "watch:lint": "onchange **/*_.js -- npm run lint",
+    "build": "npm-run-all build: /*",
+    "prebuild": "rm -rf public/",
+    "prepublishOnly": "npm run compile",
+    "semantic-commit": "commit",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "release": "standard-version $1",
+    "release:minor": "standard-version --release-as minor",
+    "release:patch": "standard-version --release-as patch",
+    "release:major": "standard-version --release-as major",
+         "format": "prettier eslint  **/*.{js,jsx,ts,tsx,json,css,scss,md} --cache --fix "
   },
   "lint-staged": {
     "*.js": [
@@ -18,16 +45,75 @@
       "git add"
     ]
   },
+  "standard-version": {
+    "types": [
+      {
+        "type": "feat",
+        "section": "Features"
+      },
+      {
+        "type": "fix",
+        "section": "Bug Fixes"
+      },
+      {
+        "type": "chore",
+        "section": "Chore changes:"
+      },
+      {
+        "type": "docs",
+        "section": "Documentation changes:"
+      },
+      {
+        "type": "style",
+        "hidden": true
+      },
+      {
+        "type": "refactor",
+        "section": "Refactors:"
+      },
+      {
+        "type": "perf",
+        "hidden": true
+      },
+      {
+        "type": "test",
+        "section": "Tests"
+      }
+    ]
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
+    "devmoji": "^2.3.0",
     "eslint": "^8.36.0",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.7.0",
     "eslint-plugin-import": "^2.27.5",
-    "husky": "^8.0.3",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.0",
     "lint-staged": "^13.2.0",
+    "npm-run-all": "^4.1.5",
+    "onchange": "^7.1.0",
     "prettier": "^2.8.4",
-    "prettier-eslint-cli": "^7.1.0"
+    "prettier-eslint-cli": "^7.1.0",
+    "sass": "^1.59.3",
+    "standard-version": "^9.5.0",
+    "stylefmt": "^6.0.3",
+    "stylelint": "^15.3.0",
+    "stylelint-config-prettier": "^9.0.5",
+    "stylelint-config-sass-guidelines": "^10.0.0",
+    "stylelint-prettier": "^3.0.0"
+  },
+  "dependencies": {
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^9.0.2",
+    "@semantic-release/release-notes-generator": "^10.0.3",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "semantic-release": "^20.1.1"
   }
 }

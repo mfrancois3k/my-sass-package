@@ -1,0 +1,267 @@
+//MIXINS
+
+//1==FONTS
+//2==REM
+//3==appereance
+//4==flexbox
+//5==inline block wrapper
+//6==clearfix
+//7==triangle
+//8==currency (usd,euro)
+//9==placeholder
+//10==scrollbar
+//11==hidden / visible
+//12==retina
+
+// ## Placeholder Color - for styling input placeholders in every browser
+// */
+@mixin placeholderColor($color) {
+	&::-webkit-input-placeholder {
+		-webkit-transition: color 200ms;
+		color: $color;
+	}
+	&:-moz-placeholder {
+		//Firefox 18-
+		-moz-transition: color 200ms;
+		color: $color;
+	}
+	&::-moz-placeholder {
+		-moz-transition: color 200ms;
+		color: $color;
+	}
+	&:-ms-input-placeholder {
+		color: $color;
+	}
+}
+
+@mixin placeholder {
+	&::-webkit-input-placeholder {
+		@content;
+	}
+
+	&:-moz-placeholder { /* Firefox 18- */
+		@content;
+	}
+
+	&::-moz-placeholder {  /* Firefox 19+ */
+		@content;
+	}
+
+	&:-ms-input-placeholder {
+		@content;
+	}
+}
+
+// input { @include placeholder {
+//     font-family: $base-font-family;
+//     color: red;
+// }}
+
+%customScrollBar {
+	&::-webkit-scrollbar {
+		width: 11px;
+	}
+
+	&::-webkit-scrollbar-button {
+		display: none;
+	}
+
+	&::-webkit-scrollbar-track {
+
+	}
+
+	&::-webkit-scrollbar-thumb {
+		border-left: 8px solid;
+		border-color: #7A8CA2;
+	}
+}
+
+
+// SHADOWS
+@mixin box-shadow ($string) {
+  -webkit-box-shadow: $string;
+  -moz-box-shadow:  $string;
+  box-shadow:     $string;
+}
+@mixin drop-shadow ($x: 0, $y: 1px, $blur: 2px, $spread: 0, $alpha: 0.25) {
+  -webkit-box-shadow: $x $y $blur $spread rgba(0, 0, 0, $alpha);
+  -moz-box-shadow:    $x $y $blur $spread rgba(0, 0, 0, $alpha);
+  box-shadow:         $x $y $blur $spread rgba(0, 0, 0, $alpha);
+}
+@mixin inner-shadow ($x: 0, $y: 1px, $blur: 2px, $spread: 0, $alpha: 0.25) {
+  -webkit-box-shadow: inset $x $y $blur $spread rgba(0, 0, 0, $alpha);
+  -moz-box-shadow:    inset $x $y $blur $spread rgba(0, 0, 0, $alpha);
+  box-shadow:         inset $x $y $blur $spread rgba(0, 0, 0, $alpha);
+}
+
+//-------------------------------------------------------
+
+@function black($opacity){
+    @return rgba(0,0,0,$opacity)
+}
+@function white($opacity){
+    @return rgba(255,255,255,$opacity)
+}
+
+//--------------------------------------------------------
+
+@mixin navigation-list {
+    list-style-type:none;
+    padding:0;
+    margin:0;
+    overflow:hidden;
+    > li{
+        display:block;
+        float:left;
+        &:last-child{
+            margin-right:0px;
+        }
+    }
+}
+
+//-----------------------------------------------------------
+
+@mixin circle($size:40px) {
+     width: $size;
+     height: $size;
+     border-radius: 100%;
+}
+
+//----------------------------------------------------------
+
+//Disables selection of content of a given element
+
+@mixin x-user-select ($value: none) {
+	-webkit-user-select: $value;
+	   -moz-user-select: $value;
+	    -ms-user-select: $value;
+	        user-select: $value;
+}
+
+@mixin srcOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+@mixin hideText($isNotOnlyTextInContainer:false) {
+  @if($isNotOnlyTextInContainer){
+    @include absolute-topRight;
+  }
+  overflow: hidden;
+  text-indent: 101%;
+  white-space: nowrap;
+}
+
+@mixin unHideText {
+  text-indent: 0;
+  white-space: normal;
+}
+
+@mixin noSelect {
+  @include user-select(none);
+}
+
+@mixin headings($from: 1, $to: 6) {
+  @for $i from $from through $to {
+    h#{$i} {
+      @content
+    }
+  }
+}
+
+@mixin blur($radius) {
+  // scss-lint:disable VendorPrefix
+  // scss-lint:disable DuplicateProperty
+  filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='#{$radius}'); /* IE lte 9 */
+  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'svgEffect-blur\'><feGaussianBlur stdDeviation=\'#{$radius}\' /></filter></svg>#svgEffect-blur"); /* Firefox needs SVG */
+  -webkit-filter: blur($radius + px);
+  -ms-filter: blur($radius + px);
+  filter: blur($radius + px);
+  // scss-lint:enable ImportantRule
+  // scss-lint:enable DuplicateProperty
+}
+
+@mixin singleLineEllipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@mixin pointer-none {
+  -moz-pointer-events: none;
+  -webkit-pointer-events: none;
+  -o-pointer-events: none;
+  -ms-pointer-events: none;
+  pointer-events: none;
+}
+
+
+@function parseInt($n) {
+  @return $n / ($n * 0 + 1);
+}
+
+@function stripUnit($number) {
+  @if type-of($number) == "number" and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+
+@function remToPx($rem) {
+  // scss-lint:disable ZeroUnit
+  @return (stripUnit($rem) * stripUnit($baseFontSize)) + 0px; // Keep "px" for converting to pixels
+  // scss-lint:enable ZeroUnit
+}
+
+// SVGs as bgs
+
+@function replace($string, $search, $replace: "") {
+  $string: $string + "";
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+@function removeHash($string) {
+  @return replace($string, "#");
+}
+
+@mixin svgAsBg($svgSource) {
+  //%23#{removeHash($colour)}
+  background-image: url("#{$svgAsBg-encoding}#{$svgSource}");
+}
+
+@mixin svg($size: 16px, $color: black) {
+  width: $size;
+  height: $size;
+  fill: $color;
+  flex-shrink: 0;
+  transition-property: fill, opacity, stroke, filter;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+  @content;
+}
+
+
+@mixin linkWithIconColour($colour) {
+  color: $colour;
+
+  svg {
+    fill: $colour;
+  }
+
+  .strokeOnly {
+    stroke: $colour;
+  }
+}
