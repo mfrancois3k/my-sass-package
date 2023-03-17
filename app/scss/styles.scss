@@ -1,0 +1,33 @@
+/*------------------------------------*\
+    TABLE OF CONTENTS
+\*------------------------------------*/
+//npm install node-normalize-scss --save-dev
+
+/**
+ *
+ * FOUNDATIONS................................................
+ * BASE.......................................................
+ */
+
+/*=============================================
+ =                   Foundations               =
+ =============================================*/
+
+ @import "foundation/all";
+
+ /*==============================================
+	=                   Base                      =
+	=============================================*/
+ @use './globals'
+
+ @import "base/reset";
+ @import "base/root";
+
+ @forward 'boilerplate';
+ @forward 'typography';
+
+ body {
+	 font-family: $body-font-family;
+	 font-size: $body-font-size;
+	 font-weight: $body-font-weight;
+ }

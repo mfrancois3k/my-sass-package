@@ -1,0 +1,108 @@
+
+/*=============================================
+=        Foundation - Typography              =
+=============================================*/
+
+/**
+ * This file defines the default font sizes to be used on headings and texts. The defaults come
+ * from the palette defined in _variables.scss.
+ */
+
+/*=============================================
+=            Body font family                  =
+=============================================*/
+$body-font-family: var(--dse-body-font-family, $playfair) !default;
+
+/*=============================================
+=            Body font sizes                  =
+=============================================*/
+
+$body-font-size: var(--dse-body-font-size, $fs-sm) !default;
+$body-font-weight: var(--dse-body-font-weight, $fw-normal) !default;
+
+/*=============================================
+=            Heading font sizes               =
+=============================================*/
+
+$h-1-font-size: var(--dse-h1-font-size, $h-1) !default;
+$h-2-font-size: var(--dse-h2-font-size, $h-2) !default;
+$h-3-font-size: var(--dse-h3-font-size, $h-3) !default;
+$h-4-font-size: var(--dse-h4-font-size, $h-4) !default;
+$h-5-font-size: var(--dse-h5-font-size, $h-5) !default;
+$h-6-font-size: var(--dse-h6-font-size, $h-6) !default;
+
+/*=============================================
+=            Head font weights                =
+=============================================*/
+
+$h-1-font-weight: var(--dse-h1-text-weight, $fw-black) !default;
+$h-2-font-weight: var(--dse-h2-text-weight, $fw-semibold) !default;
+$h-3-font-weight: var(--dse-h3-text-weight, $fw-bold) !default;
+$h-4-font-weight: var(--dse-h4-text-weight, $fw-medium) !default;
+$h-5-font-weight: var(--dse-h5-text-weight, $fw-normal) !default;
+$h-6-font-weight: var(--dse-h6-text-weight, $fw-light) !default;
+
+// Reset the global font size to the given value.
+// Helpful if the font size should change at different responsive breakpoints.
+//
+// @param integer new global font size in px
+// @return string new font size var and stylesheet for body
+@mixin refont($px) {
+  $font-size-body-px: $px;
+  $font-size-body: $font-size-body-px / 16 * 100%;
+  body { font-size: $font-size-body; }
+}
+
+// Calculates em so it could be used everywhere.
+//
+// @param integer (font) size in pixel
+// @param integer reference font-size in pixel
+// @return string em
+@function em($px: $line-height-px, $font-size: $font-size-body-px) {
+  @return $px / $font-size * 1em;
+}
+
+// Calculates rem so it could be used everywhere.
+//
+// @param integer font size in pixel
+// @param integer reference size (for rem always font-size of body) in pixel
+// @return string rem
+@function rem($px: $line-height-px, $font-size: $font-size-body-px) {
+  @return $px / $font-size * 1rem;
+}
+
+// Calculates percent so it could be used everywhere.
+//
+// @param integer size in pixel
+// @param integer reference size in pixel
+// @return string em
+@function pc($px: $line-height-px, $standard: $font-size-body-px) {
+  @return $px / $standard * 100%;
+}
+
+// Creates the font size in %
+//
+// @param integer font size in px
+// @param integer font-size of parent element in px (if empty than it's the global font size)
+// @return string css font-size with calculated % value
+@mixin font-size($px, $standard: $font-size-body-px) {
+  font-size: pc($px,$standard);
+}
+
+// Creates the line height in em
+//
+// @param integer font size in pixel
+// @param integer line-height in pixel
+// @return string line height
+@mixin line-height($line-height: $line-height-px, $font-size: $font-size-body-px) {
+  line-height: em($line-height, $font-size);
+}
+
+/* font size & line height in px */
+$font-size-body-px: 14;
+$line-height-px: 21;
+
+/* calculate font-size (in %) and line-height (in em) */
+$font-size-body: pc($font-size-body-px, 16);
+$line-height: em($line-height-px, $font-size-body-px);
+
